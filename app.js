@@ -21,10 +21,13 @@ app.use((err, req, res, next) => {
         stack: err.stack,
     });
 });
+app.get("/", (req, res) => {
+    res.send("Hello Testing is working!");
+});
 
 
-app.listen(process.env.PORT || 5000, () => {
-    console.log("Server is running on port 5000");
+app.listen(process.env.PORT || 5008, () => {
+    console.log("Server is running on port 5008");
 });
 
 
