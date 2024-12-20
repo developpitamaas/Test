@@ -81,8 +81,8 @@ const updateProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
-        res.status(200).json(products);
+        const products = await Product.find().populate("category")
+        res.status(200).json({products , totalProducts:products.length});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -91,8 +91,8 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const product = await Product.findById(id);
-        res.status(200).json(product);
+        const product = await Product.findById(id).populate("category");
+        res.status(200).json({product});
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -100,14 +100,26 @@ const getProductById = async (req, res) => {
 
 
 const getproductsbyserviceid = async (req, res) => {
-  try {
-    const { serviceId } = req.params;
-    const products = await Product.find({ serviceId });
-    res.status(200).json(products);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
+    try {
+      const { name } = req.params;
+      
+      // Case insensitive search for service by name
+      const service = await Service.findOne({ name: { $regex: new RegExp('^' + name + '$', 'i') } });
+  
+      if (!service) {
+        return res.status(404).json({ error: "Service not found" });
+      }
+  
+      // Finding products by category ID
+      const products = await Product.find({ category: service._id });
+  
+      res.status(200).json({ products });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message });
+    }
+  };
+  
 
 module.exports = {
     createService,

@@ -8,7 +8,7 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    mobileNumber: {
+    mobileNumber: { 
         type: String,
         required: true,
     },
@@ -36,8 +36,11 @@ const orderSchema = new mongoose.Schema({
     recivedAt: {
         type: Date,
     },
-    deliverdAt: {
+    deliveredAt: {
         type: Date,
+    },
+    paymentMethod: {
+        type: String,
     },
     
 });
