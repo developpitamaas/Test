@@ -40,6 +40,10 @@ const service = require("./service");
     packof: {
       type: Number,
     },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
   });
 
 module.exports = mongoose.model("Product", serviceSchema);

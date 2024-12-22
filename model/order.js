@@ -29,6 +29,9 @@ const orderSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
+    description: {
+        type: String,
+    },
     status: {
         type: String,
         default: "Pending",
@@ -42,6 +45,10 @@ const orderSchema = new mongoose.Schema({
     paymentMethod: {
         type: String,
     },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+      },
     
 });
 

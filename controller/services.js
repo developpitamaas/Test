@@ -102,7 +102,7 @@ const getProductById = async (req, res) => {
 const getproductsbyserviceid = async (req, res) => {
     try {
       const { name } = req.params;
-      
+       
       // Case insensitive search for service by name
       const service = await Service.findOne({ name: { $regex: new RegExp('^' + name + '$', 'i') } });
   
@@ -111,7 +111,7 @@ const getproductsbyserviceid = async (req, res) => {
       }
   
       // Finding products by category ID
-      const products = await Product.find({ category: service._id });
+      const products = await Product.find({ category: service._id, active:"true"  });
   
       res.status(200).json({ products });
     } catch (error) {
