@@ -7,7 +7,7 @@ const database = require("./config/database");
 app.use(cors());
 app.use(express.json());
 
-database();
+database(); 
 
 app.use("/api", serviceRoute); 
 
@@ -22,7 +22,7 @@ app.use((err, req, res, next) => {
     });
 });
 app.get("/", (req, res) => {
-    res.send("Hello Testing is working!");
+    res.send("Hello Testing is working  !");
 });
 
 
