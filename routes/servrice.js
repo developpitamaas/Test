@@ -1,5 +1,6 @@
 const ServiceData = require("../controller/services");
 const OrderData = require("../controller/order");
+const Admin = require("../controller/admin");
 const express = require("express");
 const service = express.Router();
 
@@ -27,5 +28,10 @@ service.delete("/delete-order/:id", OrderData.deleteOrderById);
 service.get("/get-all-second-order", OrderData.getorderbystatus); 
 service.post("/create-order", OrderData.createOrder);
 
+// admin 
+service.get("/metrics", Admin.calculateMetrics);
+service.get("/today-report", Admin.getTodayReport);
+service.get("/overall-report", Admin.getOverallReport);
+ 
 
 module.exports = service;

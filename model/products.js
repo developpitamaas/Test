@@ -9,6 +9,9 @@ const service = require("./service");
     shopname: {
       type: String,
     },
+    ourprice: {
+      type: Number,
+    },
     thumbnail: {
       type: String,
       required: true,

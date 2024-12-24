@@ -10,10 +10,9 @@ const createOrder = async (req, res) => {
 
     // Populate product details
     await order.populate({
-      path: 'products.productId', // Populate the productId field in the products array
-      select: 'name FinalPrice description thumbnail', // Select necessary fields from the Product model
+      path: "products.productId",
+      select: "name FinalPrice description thumbnail",
     });
-
 
     // Send order confirmation email
     const emailSubject = "Order Confirmation - " + order._id;
@@ -21,9 +20,9 @@ const createOrder = async (req, res) => {
 
     // List of recipient emails
     const recipientEmails = [
-      "vaibhavrathorema@gmail.com", 
-      "Manish78690468@gmail.com", 
-      "Fooddeliveeyy1@gmail.com"
+      "vaibhavrathorema@gmail.com",
+      "Manish78690468@gmail.com",
+      "Fooddeliveeyy1@gmail.com",
     ];
 
     // Send email to all recipients
@@ -36,18 +35,17 @@ const createOrder = async (req, res) => {
     console.log(error);
     res.status(500).json({ error: error.message });
   }
-};
-
+}; 
 
 // Helper function to format date to a readable format
 const formatDate = (date) => {
   const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
     hour12: true,
   };
   return new Date(date).toLocaleString(undefined, options); // Localized date format
@@ -56,7 +54,7 @@ const formatDate = (date) => {
 // Generate HTML content for the order email with images and styling
 const generateOrderEmail = (order) => {
   let productsHTML = "";
-  
+
   // Loop through each product and generate HTML for each item
   order.products.forEach((item) => {
     const product = item.productId;
@@ -81,14 +79,18 @@ const generateOrderEmail = (order) => {
       <p><strong>Username:</strong> ${order.username}</p>
       <p><strong>Address:</strong> ${order.address}</p>
       <p><strong>Mobile Number:</strong> ${order.mobileNumber}</p>
-      <p><strong>Order Date and Time:</strong> ${formatDate(order.createdAt)}</p> <!-- Order Time and Date -->
+      <p><strong>Order Date and Time:</strong> ${formatDate(
+        order.createdAt
+      )}</p> <!-- Order Time and Date -->
       
       <h3>Products:</h3>
       ${productsHTML}
       
       <p><strong>Total Amount:</strong> ₹${order.totalAmount}</p>
       <p><strong>Status:</strong> ${order.status}</p>
-      <p><strong>Order Date and Time:</strong> ${formatDate(order.createdAt)}</p> <!-- Order Time and Date -->
+      <p><strong>Order Date and Time:</strong> ${formatDate(
+        order.createdAt
+      )}</p> <!-- Order Time and Date -->
       
       <hr style="border-top: 1px solid #ddd;">
       
@@ -112,7 +114,7 @@ const getOrderById = async (req, res) => {
   try {
     const { id } = req.params;
     const order = await Order.findById(id);
-    res.status(200).json({order});
+    res.status(200).json({ order });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -140,19 +142,19 @@ const deleteOrderById = async (req, res) => {
 };
 
 const getorderbystatus = async (req, res) => {
-    try {
-      const status = req.query.status || "Pending";
-      const orders = await Order.find({ status: status })
-        .populate({
-          path: 'products.productId',
-          select: 'name shopname price FinalPrice discountPercentage thumbnail'
-        });
-  
-      res.status(200).json({ orders });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
+  try {
+    const status = req.query.status || "Pending";
+    const orders = await Order.find({ status: status }).populate({
+      path: "products.productId",
+      select:
+        "name shopname price FinalPrice discountPercentage thumbnail availableTimes minorderquantity packof active ourprice",
+    });
+
+    res.status(200).json({ orders });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 module.exports = {
   createOrder,
   getAllOrders,
