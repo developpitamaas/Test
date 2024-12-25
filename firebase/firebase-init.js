@@ -1,12 +1,11 @@
 const FirebaseAdmin = require("firebase-admin");
-const firebaseConfig = require('../config/firebase.json');
 
 module.exports = FirebaseAdmin.initializeApp({
     credential: FirebaseAdmin.credential.cert({
-      projectId: firebaseConfig.project_id,
-      clientEmail: firebaseConfig.client_email,
-      privateKey: firebaseConfig.private_key
+      projectId: process.env.project_id,
+      clientEmail: process.env.client_email,
+      privateKey: process.env.private_key
     }),
-    projectId: firebaseConfig.project_id
+    projectId: process.env.project_id
   });
   
