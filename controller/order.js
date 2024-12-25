@@ -2,6 +2,7 @@ const Service = require("../model/service");
 const Product = require("../model/products");
 const Order = require("../model/order");
 const sendEmail = require("../utils/sendmail");
+const fcm = require("../firebase/fcm");
 
 const createOrder = async (req, res) => {
   try {
@@ -30,6 +31,10 @@ const createOrder = async (req, res) => {
       await sendEmail(recipientEmail, emailSubject, emailMessage, true); // Send email as HTML
     }
 
+    // Send FCM notification to admin
+    const fcmTemplate = generateOrderFcmTemplate(order); // Function to generate the FCM template
+    fcm.sendToAdminOrderTopic(fcmTemplate);
+
     res.status(201).json(order);
   } catch (error) {
     console.log(error);
@@ -49,6 +54,17 @@ const formatDate = (date) => {
     hour12: true,
   };
   return new Date(date).toLocaleString(undefined, options); // Localized date format
+};
+
+const generateOrderFcmTemplate = (order) => {
+  const productName = order.products.map((item) => item.productId.name).join(", ");
+  const title = `₹${order.totalAmount} Order, ` + order._id;
+  const body = `User- ${order.username} productName- ${productName} `;
+
+  return {
+    title,
+    body,
+  };
 };
 
 // Generate HTML content for the order email with images and styling
