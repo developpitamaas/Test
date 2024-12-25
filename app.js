@@ -6,11 +6,13 @@ const serviceRoute = require("./routes/servrice");
 const database = require("./config/database");
 
 dotenv.config();
+// import env file
+dotenv.config({ path: "./config/config.env" });
 app.use(cors());
 app.use(express.json());
 
 database(); 
-
+ 
 app.use("/api", serviceRoute); 
 
 app.use((err, req, res, next) => {
